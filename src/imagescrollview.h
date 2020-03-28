@@ -1,13 +1,16 @@
 #ifndef IMAGESCROLLVIEW_H
 #define IMAGESCROLLVIEW_H
 
-#include <QObject>
-#include <QWidget>
+#include <QtCore>
+#include <QtWidgets>
 
-class ImageScrollView
+class ImageScrollView : public QScrollArea
 {
 public:
-    ImageScrollView();
-};
+    ImageScrollView( QWidget* parent = 0 );
+    ~ImageScrollView();
 
+protected:
+    virtual void wheelEvent(QWheelEvent *event);
+};
 #endif // IMAGESCROLLVIEW_H

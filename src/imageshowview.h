@@ -17,9 +17,18 @@ public:
     ImageShowView( QWidget* parent = 0 );
     ~ImageShowView();
 
+enum
+    // interface
+public:
+    // load stereo image
+    bool LoadStereoFile(QString strLeft, QString strRight);
+
 protected:
+    // paint the scene
     virtual void paintEvent(QPaintEvent * event);
-    virtual void mouseMoveEvent(QMouseEvent *event);
-    virtual void wheelEvent(QWheelEvent *event);
+
+private:
+    QImage m_ImageLeft;
+    QImage m_ImageRight;
 };
 #endif // IMAGESHOWVIEW_H
