@@ -23,7 +23,6 @@ mainwindow::mainwindow(QWidget *parent) :
     m_pMainWidget = new ImageShowView(this);
     m_pMainWidget->setFixedSize(5000, 5000);
     m_pMainWidget->setStyleSheet("background-color: yellow ");
-    m_pMainWidget->show();
 
     m_pScrollArea = new ImageScrollView();
     m_pScrollArea->setBackgroundRole(QPalette::Dark);
@@ -69,7 +68,10 @@ void mainwindow::open() {
 // load stereo image
 void mainwindow::LoadStereoFile()
 {
+    m_pMainWidget->LoadStereoFile(m_strLeftImg, m_strRightImg);
 
+    // make no sense
+    m_pMainWidget->show();
 }
 
 void mainwindow::zoomIn()

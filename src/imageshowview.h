@@ -17,7 +17,9 @@ public:
     ImageShowView( QWidget* parent = 0 );
     ~ImageShowView();
 
-enum
+    // image show model
+    enum ImageShowType{ LEFT_IMAGE = 1, RIGHT_IMAGE, RED_GREEN };
+
     // interface
 public:
     // load stereo image
@@ -27,8 +29,20 @@ protected:
     // paint the scene
     virtual void paintEvent(QPaintEvent * event);
 
+    // generate red-green image
+    void CreateRedGreenImage();
+
 private:
     QImage m_ImageLeft;
     QImage m_ImageRight;
+
+    // red-green image
+    QImage m_ImageRedGreen;
+
+    // show type
+    ImageShowType m_showType;
+
+    // image offset
+    double m_disparity;
 };
 #endif // IMAGESHOWVIEW_H
