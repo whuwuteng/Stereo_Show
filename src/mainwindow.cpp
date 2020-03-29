@@ -39,11 +39,11 @@ mainwindow::mainwindow(QWidget *parent) :
     setWindowIcon(QPixmap("icons/red-green.jpg"));
     showMaximized();
 
-    //m_strLeftImg = QString("/home/tengwu/mountdisk/L.jpg");
-    //m_strRightImg = QString("/home/tengwu/mountdisk/R.jpg");
+    m_strLeftImg = QString("/home/tengwu/mountdisk/L.jpg");
+    m_strRightImg = QString("/home/tengwu/mountdisk/R.jpg");
 
-    m_strLeftImg = QString("/home/tengwu/mountdisk/im2.png");
-    m_strRightImg = QString("/home/tengwu/mountdisk/im6.png");
+    //m_strLeftImg = QString("/home/tengwu/mountdisk/im2.png");
+    //m_strRightImg = QString("/home/tengwu/mountdisk/im6.png");
     LoadStereoFile();
 }
 

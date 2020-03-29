@@ -27,6 +27,10 @@ public:
 
     // change view model
     void ChangeModel(ImageShowType showType);
+
+    // change disparity
+    void ChangeDisparity(double disparity);
+
 protected:
     // paint the scene
     virtual void paintEvent(QPaintEvent * event);
@@ -46,5 +50,7 @@ private:
 
     // image offset
     double m_disparity;
+    int m_nMaxDisp;
+    int m_nMinDisp;
 };
 #endif // IMAGESHOWVIEW_H

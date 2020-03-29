@@ -9,6 +9,9 @@ ImageShowView::ImageShowView( QWidget* parent/* = 0 */) : QWidget(parent)
 {
     m_showType = LEFT_IMAGE;
     m_disparity = 0.0;
+
+    m_nMaxDisp = 0;
+    m_nMinDisp = 0;
 }
 
 ImageShowView::~ImageShowView()
@@ -23,6 +26,9 @@ bool ImageShowView::LoadStereoFile(QString strLeft, QString strRight)
 
     m_ImageRight.load(strRight);
     m_ImageRight = m_ImageRight.convertToFormat(QImage::Format_RGB888);
+
+    m_nMaxDisp = m_ImageLeft.width();
+    m_nMinDisp = -m_ImageRight.width();
 
     return true;
 }
@@ -69,8 +75,8 @@ void ImageShowView::CreateRedGreenImage()
 
     int nDisparity = int(m_disparity + 0.5);
 
-    int minCols_R = -nDisparity;
-    int maxCols_R = nCols_R - nDisparity;
+    int minCols_R = nDisparity;
+    int maxCols_R = nCols_R + nDisparity;
 
     int minCols_L = std::min(0, minCols_R);
     int maxCols_L = std::max(nCols_L, maxCols_R);
@@ -81,6 +87,11 @@ void ImageShowView::CreateRedGreenImage()
 
     unsigned char * pImage = new unsigned char[nRows_LR * nCols_LR * nChannel_LR];
     memset(pImage, 0, sizeof(unsigned char) * nRows_LR * nCols_LR * nChannel_LR);
+
+    // attention: qimage bits is not as the real bits
+    // rowbytes+3
+    //unsigned char * pImgL = m_ImageLeft.bits();
+    //unsigned char * pImgR = m_ImageRight.bits();
 
     // for each pixel
     unsigned char LeftPix[3] = { 0 };
@@ -124,4 +135,15 @@ void ImageShowView::CreateRedGreenImage()
     }
 
     delete []pImage;        pImage = NULL;
+}
+
+void ImageShowView::ChangeDisparity(double disparity)
+{
+    int nNewDisparity = m_disparity + disparity;
+    if (nNewDisparity <= m_nMaxDisp && nNewDisparity >= m_nMinDisp){
+        CreateRedGreenImage();
+        m_disparity = nNewDisparity;
+
+        update();
+    }
 }
