@@ -11,6 +11,11 @@
 // conclusion :
 // ImageShowView only show the image
 // ImageScrollView pass the message
+
+// a problem
+// qimage is not spvzimagelayer
+// zoomin image red-green is create in 1:1
+// disparity and scale is not in the same loop
 class ImageShowView : public QWidget
 {
 public:
@@ -31,12 +36,27 @@ public:
     // change disparity
     void ChangeDisparity(double disparity);
 
+    // Zoom image
+    void ZoomImage(double scale);
+
+    // set scale
+    void SetScale(double scale);
+
+    // best fit
+    void FitWindow(int width, int height);
+
 protected:
     // paint the scene
     virtual void paintEvent(QPaintEvent * event);
 
     // generate red-green image
     void CreateRedGreenImage();
+
+    // set widget size
+    void SetWidgetSize();
+
+    // create show image
+    QImage ImageToZoom(QImage & srcImg);
 
 private:
     QImage m_ImageLeft;
@@ -52,5 +72,7 @@ private:
     double m_disparity;
     int m_nMaxDisp;
     int m_nMinDisp;
+
+    double m_scale;
 };
 #endif // IMAGESHOWVIEW_H

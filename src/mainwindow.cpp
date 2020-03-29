@@ -24,7 +24,8 @@ mainwindow::mainwindow(QWidget *parent) :
     // method 3
 
     m_pMainWidget = new ImageShowView(this);
-    m_pMainWidget->setFixedSize(5000, 5000);
+    //m_pMainWidget->setFixedSize(5000, 5000);
+    m_pMainWidget->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
     m_pMainWidget->setStyleSheet("background-color: yellow ");
 
     m_pScrollArea = new ImageScrollView();
@@ -39,8 +40,8 @@ mainwindow::mainwindow(QWidget *parent) :
     setWindowIcon(QPixmap("icons/red-green.jpg"));
     showMaximized();
 
-    m_strLeftImg = QString("/home/tengwu/mountdisk/L.jpg");
-    m_strRightImg = QString("/home/tengwu/mountdisk/R.jpg");
+    //m_strLeftImg = QString("/home/tengwu/mountdisk/L.jpg");
+    //m_strRightImg = QString("/home/tengwu/mountdisk/R.jpg");
 
     //m_strLeftImg = QString("/home/tengwu/mountdisk/im2.png");
     //m_strRightImg = QString("/home/tengwu/mountdisk/im6.png");
@@ -79,30 +80,30 @@ void mainwindow::open() {
 void mainwindow::LoadStereoFile()
 {
     m_pMainWidget->LoadStereoFile(m_strLeftImg, m_strRightImg);
-
     // make no sense
     m_pMainWidget->show();
 }
 
 void mainwindow::zoomIn()
 {
-    //scaleImage(1.25);
+    m_pMainWidget->ZoomImage(1.25);
 }
 
 void mainwindow::zoomOut()
 {
-    //scaleImage(0.8);
+    m_pMainWidget->ZoomImage(0.8);
 }
 
 void mainwindow::normalSize()
 {
-    //m_pImageLabel->adjustSize();
+    m_pMainWidget->SetScale(1.0);
 }
 
-//
 void mainwindow::fitToWindow()
 {
-
+    int nWidth = width();
+    int nHeith = height();
+    m_pMainWidget->FitWindow(nWidth, nHeith);
 }
 
 void mainwindow::about()

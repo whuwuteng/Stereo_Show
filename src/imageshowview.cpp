@@ -12,6 +12,8 @@ ImageShowView::ImageShowView( QWidget* parent/* = 0 */) : QWidget(parent)
 
     m_nMaxDisp = 0;
     m_nMinDisp = 0;
+
+    m_scale = 1.0;
 }
 
 ImageShowView::~ImageShowView()
@@ -30,6 +32,10 @@ bool ImageShowView::LoadStereoFile(QString strLeft, QString strRight)
     m_nMaxDisp = m_ImageLeft.width();
     m_nMinDisp = -m_ImageRight.width();
 
+    if (m_showType == RED_GREEN){
+        CreateRedGreenImage();
+    }
+    SetWidgetSize();
     return true;
 }
 
@@ -37,22 +43,30 @@ void ImageShowView::ChangeModel(ImageShowType showType)
 {
     m_showType = showType;
     CreateRedGreenImage();
+    SetWidgetSize();
     update();
+}
+
+QImage ImageShowView::ImageToZoom(QImage & srcImg)
+{
+    int nCols = int(srcImg.width() * m_scale + 0.5);
+    int nRows = int(srcImg.height() * m_scale + 0.5);
+    return srcImg.scaled(nCols, nRows);
 }
 
 void ImageShowView::paintEvent(QPaintEvent * event)
 {
     if (m_showType == LEFT_IMAGE){
         QPainter painter(this);
-        painter.drawImage(QPoint(0, 0), m_ImageLeft);
+        painter.drawImage(QPoint(0, 0), ImageToZoom(m_ImageLeft));
     }
     else if (m_showType == RIGHT_IMAGE){
         QPainter painter(this);
-        painter.drawImage(QPoint(0, 0), m_ImageRight);
+        painter.drawImage(QPoint(0, 0), ImageToZoom(m_ImageRight));
     }
     else if (m_showType == RED_GREEN){
         QPainter painter(this);
-        painter.drawImage(QPoint(0, 0), m_ImageRedGreen);
+        painter.drawImage(QPoint(0, 0), ImageToZoom(m_ImageRedGreen));
     }
 }
 
@@ -139,11 +153,95 @@ void ImageShowView::CreateRedGreenImage()
 
 void ImageShowView::ChangeDisparity(double disparity)
 {
-    int nNewDisparity = m_disparity + disparity;
-    if (nNewDisparity <= m_nMaxDisp && nNewDisparity >= m_nMinDisp){
+    double NewDisparity = m_disparity + disparity/m_scale;
+    if (NewDisparity <= m_nMaxDisp && NewDisparity >= m_nMinDisp){
+        m_disparity = NewDisparity;
         CreateRedGreenImage();
-        m_disparity = nNewDisparity;
 
+        SetWidgetSize();
         update();
     }
+}
+
+void ImageShowView::ZoomImage(double scale)
+{
+    m_scale *= scale;
+    SetWidgetSize();
+    update();
+}
+
+void ImageShowView::SetScale(double scale)
+{
+    m_scale = scale;
+    SetWidgetSize();
+    update();
+}
+
+void ImageShowView::FitWindow(int width, int height)
+{
+    int nSrcCols = 0;
+    int nSrcRows = 0;
+
+    switch (m_showType) {
+    case LEFT_IMAGE:
+        nSrcCols = m_ImageLeft.width();
+        nSrcRows = m_ImageLeft.height();
+        break;
+    case RIGHT_IMAGE:
+        nSrcCols = m_ImageRight.width();
+        nSrcRows = m_ImageRight.height();
+        break;
+    case RED_GREEN:
+        nSrcCols = m_ImageRedGreen.width();
+        nSrcRows = m_ImageRedGreen.height();
+        break;
+    default:
+        nSrcCols = 100;
+        nSrcRows = 100;
+        break;
+    }
+
+    double wScale = (double)width/(double)nSrcCols;
+    double hScale = (double)height/(double)nSrcRows;
+
+    double scale = std::min(wScale, hScale);
+
+/*
+    if (scale > 1.0){
+        scale = 1.0;
+    }
+*/
+    m_scale = scale;
+    SetWidgetSize();
+    update();
+}
+
+void ImageShowView::SetWidgetSize()
+{
+    int nSrcCols = 0;
+    int nSrcRows = 0;
+
+    switch (m_showType) {
+    case LEFT_IMAGE:
+        nSrcCols = m_ImageLeft.width();
+        nSrcRows = m_ImageLeft.height();
+        break;
+    case RIGHT_IMAGE:
+        nSrcCols = m_ImageRight.width();
+        nSrcRows = m_ImageRight.height();
+        break;
+    case RED_GREEN:
+        nSrcCols = m_ImageRedGreen.width();
+        nSrcRows = m_ImageRedGreen.height();
+        break;
+    default:
+        nSrcCols = 100;
+        nSrcRows = 100;
+        break;
+    }
+
+    int nCols = int(nSrcCols * m_scale + 0.5);
+    int nRows = int(nSrcRows * m_scale + 0.5);
+
+    setFixedSize(nCols, nRows);
 }
