@@ -4,6 +4,7 @@
 #include "mainwindow.h"
 #include "stereodialog.h"
 
+// icons from project https://github.com/AntonioRedondo/ImageFeatureDetector
 mainwindow::mainwindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::mainwindow)
@@ -22,6 +23,38 @@ mainwindow::mainwindow(QWidget *parent) :
     connect(ui->uiActionRight, &QAction::triggered, this, &mainwindow::showRight);
     connect(ui->uiActionRed_Green, &QAction::triggered, this, &mainwindow::showRed_Green);
     // method 3
+
+    ui->uiActionOpen->setIcon(QPixmap("icons/fileopen.svg"));
+    ui->uiActionOpen->setIconVisibleInMenu(true);
+    ui->mainToolBar->addAction(ui->uiActionOpen);
+
+    ui->uiActionZoom_In->setIcon(QPixmap("icons/zoom-in.svg"));
+    ui->uiActionZoom_In->setIconVisibleInMenu(true);
+    ui->mainToolBar->addAction(ui->uiActionZoom_In);
+
+    ui->uiActionZoom_Out->setIcon(QPixmap("icons/zoom-out.svg"));
+    ui->uiActionZoom_Out->setIconVisibleInMenu(true);
+    ui->mainToolBar->addAction(ui->uiActionZoom_Out);
+
+    ui->uiActionNormal_Size->setIcon(QPixmap("icons/zoom-original.svg"));
+    ui->uiActionNormal_Size->setIconVisibleInMenu(true);
+    ui->mainToolBar->addAction(ui->uiActionNormal_Size);
+
+    ui->uiActionFit_to_Window->setIcon(QPixmap("icons/zoom-fit-best.svg"));
+    ui->uiActionFit_to_Window->setIconVisibleInMenu(true);
+    ui->mainToolBar->addAction(ui->uiActionFit_to_Window);
+
+    ui->uiActionLeft->setIcon(QPixmap("icons/left.png"));
+    ui->uiActionLeft->setIconVisibleInMenu(true);
+    ui->mainToolBar->addAction(ui->uiActionLeft);
+
+    ui->uiActionRight->setIcon(QPixmap("icons/right.png"));
+    ui->uiActionRight->setIconVisibleInMenu(true);
+    ui->mainToolBar->addAction(ui->uiActionRight);
+
+    ui->uiActionRed_Green->setIcon(QPixmap("icons/stereo.jpg"));
+    ui->uiActionRed_Green->setIconVisibleInMenu(true);
+    ui->mainToolBar->addAction(ui->uiActionRed_Green);
 
     m_pMainWidget = new ImageShowView(this);
     //m_pMainWidget->setFixedSize(5000, 5000);
