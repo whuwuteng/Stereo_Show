@@ -23,11 +23,20 @@ public:
     ~mainwindow();
 
 private slots:
+    // file
     void open();
+
+    // image zoom
     void zoomIn();
     void zoomOut();
     void normalSize();
     void fitToWindow();
+
+    // image mode
+    void showLeft();
+    void showRight();
+    void showRed_Green();
+
     void about();
 
 private:

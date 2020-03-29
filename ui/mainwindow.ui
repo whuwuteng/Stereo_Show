@@ -44,8 +44,17 @@
     </property>
     <addaction name="uiActionAbout"/>
    </widget>
+   <widget class="QMenu" name="menuMode">
+    <property name="title">
+     <string>View Mode</string>
+    </property>
+    <addaction name="uiActionLeft"/>
+    <addaction name="uiActionRight"/>
+    <addaction name="uiActionRed_Green"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuView"/>
+   <addaction name="menuMode"/>
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
@@ -85,6 +94,21 @@
   <action name="uiActionAbout">
    <property name="text">
     <string>About</string>
+   </property>
+  </action>
+  <action name="uiActionLeft">
+   <property name="text">
+    <string>Left</string>
+   </property>
+  </action>
+  <action name="uiActionRight">
+   <property name="text">
+    <string>Right</string>
+   </property>
+  </action>
+  <action name="uiActionRed_Green">
+   <property name="text">
+    <string>Red-Green</string>
    </property>
   </action>
  </widget>

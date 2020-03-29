@@ -25,6 +25,8 @@ public:
     // load stereo image
     bool LoadStereoFile(QString strLeft, QString strRight);
 
+    // change view model
+    void ChangeModel(ImageShowType showType);
 protected:
     // paint the scene
     virtual void paintEvent(QPaintEvent * event);

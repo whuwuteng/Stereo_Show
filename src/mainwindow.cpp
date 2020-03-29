@@ -16,8 +16,11 @@ mainwindow::mainwindow(QWidget *parent) :
     connect(ui->uiActionZoom_Out, &QAction::triggered, this, &mainwindow::zoomOut);
     connect(ui->uiActionNormal_Size, &QAction::triggered, this, &mainwindow::normalSize);
     connect(ui->uiActionFit_to_Window, &QAction::triggered, this, &mainwindow::fitToWindow);
-    connect(ui->uiActionAbout,&QAction::triggered, this, &mainwindow::about);
+    connect(ui->uiActionAbout, &QAction::triggered, this, &mainwindow::about);
 
+    connect(ui->uiActionLeft, &QAction::triggered, this, &mainwindow::showLeft);
+    connect(ui->uiActionRight, &QAction::triggered, this, &mainwindow::showRight);
+    connect(ui->uiActionRed_Green, &QAction::triggered, this, &mainwindow::showRed_Green);
     // method 3
 
     m_pMainWidget = new ImageShowView(this);
@@ -35,6 +38,13 @@ mainwindow::mainwindow(QWidget *parent) :
 
     setWindowIcon(QPixmap("icons/red-green.jpg"));
     showMaximized();
+
+    //m_strLeftImg = QString("/home/tengwu/mountdisk/L.jpg");
+    //m_strRightImg = QString("/home/tengwu/mountdisk/R.jpg");
+
+    m_strLeftImg = QString("/home/tengwu/mountdisk/im2.png");
+    m_strRightImg = QString("/home/tengwu/mountdisk/im6.png");
+    LoadStereoFile();
 }
 
 mainwindow::~mainwindow()
@@ -99,4 +109,19 @@ void mainwindow::about()
 {
     QMessageBox::about(this, tr("About Stereo Image Viewer"),
             tr("<p>The <b> Stereo Image Viewer </b> shows the error in epilar images "));
+}
+
+void mainwindow::showLeft()
+{
+    m_pMainWidget->ChangeModel(ImageShowView::LEFT_IMAGE);
+}
+
+void mainwindow::showRight()
+{
+    m_pMainWidget->ChangeModel(ImageShowView::RIGHT_IMAGE);
+}
+
+void mainwindow::showRed_Green()
+{
+    m_pMainWidget->ChangeModel(ImageShowView::RED_GREEN);
 }
