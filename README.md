@@ -1,6 +1,6 @@
 # A Qt based tool to show Epipolar stereo image
 
-This is a Qt and CMake based project to show stereo image in one window in Red-and-Green mode.
+This is a Qt and CMake based project to show stereo image in one window in [Red/Cyan mode](https://en.wikipedia.org/wiki/Anaglyph_3D).
 
 ## OVERVIEW
 If you want to check parallax error in y(vertic), because this error is important for stereo Matching.
