@@ -23,11 +23,36 @@ ImageShowView::~ImageShowView()
 
 bool ImageShowView::LoadStereoFile(QString strLeft, QString strRight)
 {
-    m_ImageLeft.load(strLeft);
-    m_ImageLeft = m_ImageLeft.convertToFormat(QImage::Format_RGB888);
+    if (strLeft.isEmpty() || strRight.isEmpty()){
+        return false;
+    }
+    if (! m_ImageLeft.load(strLeft)){
+        QString msg = QString("Can not open: ") + strLeft;
+        QMessageBox::about(this, tr("Stereo Image Viewer"), msg);
+        return false;
+    }
+    // if image is too large, out of mememory
+    /* m_ImageLeft = m_ImageLeft.convertToFormat(QImage::Format_RGB888);
+    if (m_ImageLeft.isNull()){
+        QString msg = QString("Can not convert: ") + strLeft;
+        QMessageBox::about(this, tr("Stereo Image Viewer"), msg);
+        return false;
+    }*/
 
-    m_ImageRight.load(strRight);
-    m_ImageRight = m_ImageRight.convertToFormat(QImage::Format_RGB888);
+    if (! m_ImageRight.load(strRight)){
+        QString msg = QString("Can not open: ") + strRight;
+        QMessageBox::about(this, tr("Stereo Image Viewer"), msg);
+        return false;
+    }
+    /* m_ImageRight = m_ImageRight.convertToFormat(QImage::Format_RGB888);
+    if (m_ImageRight.isNull()){
+        QString msg = QString("Can not convert: ") + strRight;
+        QMessageBox::about(this, tr("Stereo Image Viewer"), msg);
+        return false;
+    }*/
+
+    m_strLeftImg = strLeft;
+    m_strRightImg = strRight;
 
     m_nMaxDisp = m_ImageLeft.width();
     m_nMinDisp = -m_ImageRight.width();
@@ -80,12 +105,24 @@ void ImageShowView::CreateRedGreenImage()
     // left image
     int nRows_L = m_ImageLeft.height();
     int nCols_L = m_ImageLeft.width();
-    int nChannel_L = m_ImageLeft.byteCount();
+    int nChannel_L = m_ImageLeft.bitPlaneCount();
+
+    if (nChannel_L != 8 && nChannel_L != 24){
+        QString msg = QString("Only support gray and RGB: ") + m_strLeftImg;
+        QMessageBox::about(this, tr("Stereo Image Viewer"), msg);
+        return;
+    }
 
     // right image
     int nRows_R = m_ImageRight.height();
     int nCols_R = m_ImageRight.width();
-    int nChannel_R = m_ImageRight.byteCount();
+    int nChannel_R = m_ImageRight.bitPlaneCount();
+
+    if (nChannel_R != 8 && nChannel_R != 24){
+        QString msg = QString("Only support gray and RGB: ") + m_strRightImg;
+        QMessageBox::about(this, tr("Stereo Image Viewer"), msg);
+        return;
+    }
 
     int nDisparity = int(m_disparity + 0.5);
 
@@ -101,6 +138,10 @@ void ImageShowView::CreateRedGreenImage()
 
     unsigned char * pImage = new unsigned char[nRows_LR * nCols_LR * nChannel_LR];
     memset(pImage, 0, sizeof(unsigned char) * nRows_LR * nCols_LR * nChannel_LR);
+    if (pImage == NULL){
+        printf("out of memeory\n");
+        return;
+    }
 
     // attention: qimage bits is not as the real bits
     // rowbytes+3
@@ -123,7 +164,14 @@ void ImageShowView::CreateRedGreenImage()
             }
             else{
                 //LeftPix[0] = pImgL[(i * nCols_L + j) * 3];
-                memcpy(LeftPix, pImgL + j * 3, sizeof(unsigned char) * 3);
+                if (nChannel_L == 24){
+                    memcpy(LeftPix, pImgL + j * 3, sizeof(unsigned char) * 3);
+                }
+                else{
+                    LeftPix[0] = pImgL[j];
+                    LeftPix[1] = pImgL[j];
+                    LeftPix[2] = pImgL[j];
+                }
             }
 
             // right image
@@ -132,7 +180,14 @@ void ImageShowView::CreateRedGreenImage()
                 memset(RightPix, 0, sizeof(unsigned char) * 3);
             }
             else{
-                memcpy(RightPix, pImgR + nIndex_R * 3, sizeof(unsigned char) * 3);
+                if (nChannel_R == 24) {
+                    memcpy(RightPix, pImgR + nIndex_R * 3, sizeof(unsigned char) * 3);
+                }
+                else{
+                    RightPix[0] = pImgR[nIndex_R];
+                    RightPix[1] = pImgR[nIndex_R];
+                    RightPix[2] = pImgR[nIndex_R];
+                }
             }
 
             // fusion

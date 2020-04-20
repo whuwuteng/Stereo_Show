@@ -62,6 +62,10 @@ private:
     QImage m_ImageLeft;
     QImage m_ImageRight;
 
+    // stereo images
+    QString m_strLeftImg;
+    QString m_strRightImg;
+
     // red-green image
     QImage m_ImageRedGreen;
 

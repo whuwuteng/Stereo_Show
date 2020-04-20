@@ -24,10 +24,14 @@ static void initializeImageFileDialog(QFileDialog &dialog, QFileDialog::AcceptMo
 {
     static bool firstDialog = true;
 
+    QString default_path = "/home/tengwu/mountdisk";
+
     if (firstDialog) {
         firstDialog = false;
         const QStringList picturesLocations = QStandardPaths::standardLocations(QStandardPaths::PicturesLocation);
-        dialog.setDirectory(picturesLocations.isEmpty() ? QDir::currentPath() : picturesLocations.last());
+        //dialog.setDirectory(picturesLocations.isEmpty() ? QDir::currentPath() : picturesLocations.last());
+
+        dialog.setDirectory(default_path);
     }
 
     QStringList mimeTypeFilters;
@@ -37,7 +41,8 @@ static void initializeImageFileDialog(QFileDialog &dialog, QFileDialog::AcceptMo
         mimeTypeFilters.append(mimeTypeName);
     mimeTypeFilters.sort();
     dialog.setMimeTypeFilters(mimeTypeFilters);
-    dialog.selectMimeTypeFilter("image/jpeg");
+    dialog.selectMimeTypeFilter("image/tiff");
+    //dialog.selectMimeTypeFilter("image/(*.png *.tif *.jpg)");
     if (acceptMode == QFileDialog::AcceptSave)
         dialog.setDefaultSuffix("jpg");
 }
