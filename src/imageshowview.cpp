@@ -245,6 +245,11 @@ void ImageShowView::CreateRedGreenImage()
     delete []pImage;        pImage = NULL;
 }
 
+void ImageShowView::SetDisparity(double disparity)
+{
+    m_disparity = disparity;
+}
+
 void ImageShowView::ChangeDisparity(double disparity)
 {
     double NewDisparity = m_disparity + disparity/m_scale;

@@ -33,6 +33,9 @@ public:
     // change view model
     void ChangeModel(ImageShowType showType);
 
+    // set disparity
+    void SetDisparity(double disparity);
+
     // change disparity
     void ChangeDisparity(double disparity);
 

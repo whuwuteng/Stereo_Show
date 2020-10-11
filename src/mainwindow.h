@@ -37,6 +37,8 @@ private slots:
     void showRight();
     void showRed_Green();
 
+    // load setting
+    void loadSettings();
     void about();
 
 private:
@@ -49,6 +51,11 @@ private:
     // stereo images
     QString m_strLeftImg;
     QString m_strRightImg;
+
+    // setting file
+    QString m_strSettingsFile;
+
+    double m_disparity;
 
     // show image in a label
     ImageShowView *m_pMainWidget;

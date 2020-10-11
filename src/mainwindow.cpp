@@ -1,6 +1,8 @@
 
 #include <qmessagebox.h>
 
+#include <iostream>
+
 #include "mainwindow.h"
 #include "stereodialog.h"
 
@@ -10,6 +12,11 @@ mainwindow::mainwindow(QWidget *parent) :
     ui(new Ui::mainwindow)
 {
     ui->setupUi(this);
+
+    m_strSettingsFile = QApplication::applicationDirPath() + "/settings.ini";
+    std::cout << "setting file: " << m_strSettingsFile.toStdString() << std::endl;
+
+    loadSettings();
 
     // message
     connect(ui->uiActionOpen, &QAction::triggered, this, &mainwindow::open);
@@ -60,6 +67,7 @@ mainwindow::mainwindow(QWidget *parent) :
     //m_pMainWidget->setFixedSize(5000, 5000);
     m_pMainWidget->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
     m_pMainWidget->setStyleSheet("background-color: yellow ");
+    m_pMainWidget->SetDisparity(m_disparity);
 
     m_pScrollArea = new ImageScrollView();
     m_pScrollArea->setBackgroundRole(QPalette::Dark);
@@ -161,4 +169,14 @@ void mainwindow::showRight()
 void mainwindow::showRed_Green()
 {
     m_pMainWidget->ChangeModel(ImageShowView::RED_GREEN);
+}
+
+void mainwindow::loadSettings()
+{
+    QSettings settings(m_strSettingsFile, QSettings::NativeFormat);
+    QString sText = settings.value("disp", "").toString();
+
+    m_disparity = sText.toDouble();
+
+    std::cout << "initial disparity: " << m_disparity << std::endl;
 }
