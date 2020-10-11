@@ -5,7 +5,7 @@
 
 #include "mainwindow.h"
 #include "stereodialog.h"
-
+// refer the path https://stackoverflow.com/questions/18459521/can-i-use-applicationdirpath-to-access-resources-at-a-higher-directory-level
 // icons from project https://github.com/AntonioRedondo/ImageFeatureDetector
 mainwindow::mainwindow(QWidget *parent) :
     QMainWindow(parent),
@@ -14,7 +14,7 @@ mainwindow::mainwindow(QWidget *parent) :
     ui->setupUi(this);
 
     m_strSettingsFile = QApplication::applicationDirPath() + "/settings.ini";
-    std::cout << "setting file: " << m_strSettingsFile.toStdString() << std::endl;
+    //std::cout << "setting file: " << m_strSettingsFile.toStdString() << std::endl;
 
     loadSettings();
 
@@ -171,6 +171,7 @@ void mainwindow::showRed_Green()
     m_pMainWidget->ChangeModel(ImageShowView::RED_GREEN);
 }
 
+// refer to https://wiki.qt.io/How_to_Use_QSettings
 void mainwindow::loadSettings()
 {
     QSettings settings(m_strSettingsFile, QSettings::NativeFormat);
@@ -178,5 +179,5 @@ void mainwindow::loadSettings()
 
     m_disparity = sText.toDouble();
 
-    std::cout << "initial disparity: " << m_disparity << std::endl;
+    //std::cout << "initial disparity: " << m_disparity << std::endl;
 }
