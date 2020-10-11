@@ -78,6 +78,9 @@ mainwindow::mainwindow(QWidget *parent) :
 
     //m_strLeftImg = QString("/home/tengwu/mountdisk/im2.png");
     //m_strRightImg = QString("/home/tengwu/mountdisk/im6.png");
+
+    //m_strLeftImg = QString("/home/tengwu/left.png");
+    //m_strRightImg = QString("/home/tengwu/right.png");
     LoadStereoFile();
 }
 

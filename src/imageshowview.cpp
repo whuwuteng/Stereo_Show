@@ -1,6 +1,7 @@
 
 #include "imageshowview.h"
 
+#include <iostream>
 #include <algorithm>
 
 #include <QPainter>
@@ -31,6 +32,13 @@ bool ImageShowView::LoadStereoFile(QString strLeft, QString strRight)
         QMessageBox::about(this, tr("Stereo Image Viewer"), msg);
         return false;
     }
+/*
+    QImage::Format lfmt = m_ImageLeft.format();
+    printf("left image foramt: %d\n", lfmt);
+    if (lfmt != QImage::Format_RGB888 && lfmt != QImage::Format_Grayscale8){
+        m_ImageLeft = m_ImageLeft.convertToFormat(QImage::Format_RGB888);
+    }
+*/
     // if image is too large, out of mememory
     /* m_ImageLeft = m_ImageLeft.convertToFormat(QImage::Format_RGB888);
     if (m_ImageLeft.isNull()){
@@ -44,6 +52,13 @@ bool ImageShowView::LoadStereoFile(QString strLeft, QString strRight)
         QMessageBox::about(this, tr("Stereo Image Viewer"), msg);
         return false;
     }
+/*
+    QImage::Format rfmt = m_ImageLeft.format();
+    printf("right image foramt: %d\n", rfmt);
+    if (rfmt != QImage::Format_RGB888 && rfmt != QImage::Format_Grayscale8){
+        m_ImageRight = m_ImageRight.convertToFormat(QImage::Format_RGB888);
+    }
+*/
     /* m_ImageRight = m_ImageRight.convertToFormat(QImage::Format_RGB888);
     if (m_ImageRight.isNull()){
         QString msg = QString("Can not convert: ") + strRight;
@@ -107,6 +122,7 @@ void ImageShowView::CreateRedGreenImage()
     int nCols_L = m_ImageLeft.width();
     int nChannel_L = m_ImageLeft.bitPlaneCount();
 
+    std::cout << "image channel: " << nChannel_L << std::endl;
     if (nChannel_L != 8 && nChannel_L != 24){
         QString msg = QString("Only support gray and RGB: ") + m_strLeftImg;
         QMessageBox::about(this, tr("Stereo Image Viewer"), msg);
@@ -153,10 +169,14 @@ void ImageShowView::CreateRedGreenImage()
     unsigned char RightPix[3] = { 0 };
 
     // red-green
+    // scanLine(i) is different from the data block
+    // should use other method to get color
     for (int i = 0; i < nRows_LR; ++i){
         // get the data from images
-        unsigned char * pImgL = m_ImageLeft.scanLine(i);
-        unsigned char * pImgR = m_ImageRight.scanLine(i);
+        QRgb * pImgL = reinterpret_cast<QRgb*>(m_ImageLeft.scanLine(i));
+        QRgb * pImgR = reinterpret_cast<QRgb*>(m_ImageRight.scanLine(i));
+        //unsigned char * pImgL = m_ImageLeft.scanLine(i);
+        //unsigned char * pImgR = m_ImageRight.scanLine(i);
         for (int j = minCols_L; j < maxCols_L; ++j){
             // left Image
             if (j < 0 || j >= nCols_L){
@@ -164,14 +184,18 @@ void ImageShowView::CreateRedGreenImage()
             }
             else{
                 //LeftPix[0] = pImgL[(i * nCols_L + j) * 3];
-                if (nChannel_L == 24){
+                /*if (nChannel_L == 24){
                     memcpy(LeftPix, pImgL + j * 3, sizeof(unsigned char) * 3);
                 }
                 else{
                     LeftPix[0] = pImgL[j];
                     LeftPix[1] = pImgL[j];
                     LeftPix[2] = pImgL[j];
-                }
+                }*/
+                QColor pixel_color(pImgL[j]);
+                LeftPix[0] = pixel_color.red();
+                LeftPix[1] = pixel_color.green();
+                LeftPix[2] = pixel_color.blue();
             }
 
             // right image
@@ -180,14 +204,18 @@ void ImageShowView::CreateRedGreenImage()
                 memset(RightPix, 0, sizeof(unsigned char) * 3);
             }
             else{
-                if (nChannel_R == 24) {
+               /*if (nChannel_R == 24) {
                     memcpy(RightPix, pImgR + nIndex_R * 3, sizeof(unsigned char) * 3);
                 }
                 else{
                     RightPix[0] = pImgR[nIndex_R];
                     RightPix[1] = pImgR[nIndex_R];
                     RightPix[2] = pImgR[nIndex_R];
-                }
+                }*/
+                QColor pixel_color(pImgR[nIndex_R]);
+                RightPix[0] = pixel_color.red();
+                RightPix[1] = pixel_color.green();
+                RightPix[2] = pixel_color.blue();
             }
 
             // fusion
@@ -198,11 +226,20 @@ void ImageShowView::CreateRedGreenImage()
         }
     }
 
-    m_ImageRedGreen = QImage(nCols_LR, nRows_LR, QImage::Format_RGB888);
+    // Format_RGB888 is wrong
+    // should use Format_RGB32
+    m_ImageRedGreen = QImage(nCols_LR, nRows_LR, QImage::Format_RGB32);
+    m_ImageRedGreen.fill(0);
     for (int i = 0; i < nRows_LR; ++i){
-        memcpy(m_ImageRedGreen.scanLine(i), pImage + i * nCols_LR * 3, sizeof(unsigned char) * nCols_LR * 3);
+        //memcpy(m_ImageRedGreen.scanLine(i), pImage + i * nCols_LR * 3, sizeof(unsigned char) * nCols_LR * 3);
+        QRgb * pLineQimg = reinterpret_cast<QRgb*>(m_ImageRedGreen.scanLine(i));
+        unsigned char * pLineImage = pImage + i * nCols_LR * 3;
+        for (int j = 0; j < nCols_LR; ++j){
+           QColor pixel_color(pLineImage[j * 3], pLineImage[j * 3 + 1], pLineImage[j * 3 + 2]);
+           pLineQimg[j] = pixel_color.rgb();
+        }
     }
-
+    //m_ImageRedGreen.save("/home/tengwu/mountdisk/stereo.jpg");
     delete []pImage;        pImage = NULL;
 }
 
