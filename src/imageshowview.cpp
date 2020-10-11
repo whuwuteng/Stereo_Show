@@ -122,7 +122,7 @@ void ImageShowView::CreateRedGreenImage()
     int nCols_L = m_ImageLeft.width();
     int nChannel_L = m_ImageLeft.bitPlaneCount();
 
-    std::cout << "image channel: " << nChannel_L << std::endl;
+    //std::cout << "image channel: " << nChannel_L << std::endl;
     if (nChannel_L != 8 && nChannel_L != 24){
         QString msg = QString("Only support gray and RGB: ") + m_strLeftImg;
         QMessageBox::about(this, tr("Stereo Image Viewer"), msg);
@@ -171,6 +171,8 @@ void ImageShowView::CreateRedGreenImage()
     // red-green
     // scanLine(i) is different from the data block
     // should use other method to get color
+    // refer https://stackoverflow.com/questions/12382301/qt-qimage-how-to-extract-rgb
+    // refer https://forum.qt.io/topic/73504/qimage-read-pixels-and-copy-them-with-scanline-method/2
     for (int i = 0; i < nRows_LR; ++i){
         // get the data from images
         QRgb * pImgL = reinterpret_cast<QRgb*>(m_ImageLeft.scanLine(i));

@@ -15,6 +15,9 @@ You can use QtCreate to import the porject, also you can use CMake
 <LI> make
 </UL>
 
+## FEATURE
+Can hand both gray and color image.
+
 ## MAINTENANCE
 
 If you think you have any problem, contact Teng Wu <teng.wu@ign.fr>
