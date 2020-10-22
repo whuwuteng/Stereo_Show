@@ -175,56 +175,67 @@ void ImageShowView::CreateRedGreenImage()
     // refer https://forum.qt.io/topic/73504/qimage-read-pixels-and-copy-them-with-scanline-method/2
     for (int i = 0; i < nRows_LR; ++i){
         // get the data from images
-        QRgb * pImgL = reinterpret_cast<QRgb*>(m_ImageLeft.scanLine(i));
-        QRgb * pImgR = reinterpret_cast<QRgb*>(m_ImageRight.scanLine(i));
-        //unsigned char * pImgL = m_ImageLeft.scanLine(i);
-        //unsigned char * pImgR = m_ImageRight.scanLine(i);
-        for (int j = minCols_L; j < maxCols_L; ++j){
-            // left Image
-            if (j < 0 || j >= nCols_L){
-                memset(LeftPix, 0, sizeof(unsigned char) * 3);
-            }
-            else{
-                //LeftPix[0] = pImgL[(i * nCols_L + j) * 3];
-                /*if (nChannel_L == 24){
-                    memcpy(LeftPix, pImgL + j * 3, sizeof(unsigned char) * 3);
+        if (nChannel_L == 24){
+            QRgb * pImgL = reinterpret_cast<QRgb*>(m_ImageLeft.scanLine(i));
+            QRgb * pImgR = reinterpret_cast<QRgb*>(m_ImageRight.scanLine(i));
+            for (int j = minCols_L; j < maxCols_L; ++j){
+                // left Image
+                if (j < 0 || j >= nCols_L){
+                    memset(LeftPix, 0, sizeof(unsigned char) * 3);
                 }
                 else{
-                    LeftPix[0] = pImgL[j];
-                    LeftPix[1] = pImgL[j];
-                    LeftPix[2] = pImgL[j];
-                }*/
-                QColor pixel_color(pImgL[j]);
-                LeftPix[0] = pixel_color.red();
-                LeftPix[1] = pixel_color.green();
-                LeftPix[2] = pixel_color.blue();
+                    QColor pixel_color(pImgL[j]);
+                    LeftPix[0] = pixel_color.red();
+                    LeftPix[1] = pixel_color.green();
+                    LeftPix[2] = pixel_color.blue();
+                }
+                // right image
+                int nIndex_R = j - nDisparity;
+                if (nIndex_R < 0 || nIndex_R >= nCols_R){
+                    memset(RightPix, 0, sizeof(unsigned char) * 3);
+                }
+                else{
+                    QColor pixel_color(pImgR[nIndex_R]);
+                    RightPix[0] = pixel_color.red();
+                    RightPix[1] = pixel_color.green();
+                    RightPix[2] = pixel_color.blue();
+                }
+                // fusion
+                int nIndex = j - minCols_L;
+                pImage[(i * nCols_LR + nIndex) * 3] = RightPix[0];
+                pImage[(i * nCols_LR + nIndex) * 3 + 1] = RightPix[1];
+                pImage[(i * nCols_LR + nIndex) * 3 + 2] = LeftPix[2];
             }
-
-            // right image
-            int nIndex_R = j - nDisparity;
-            if (nIndex_R < 0 || nIndex_R >= nCols_R){
-                memset(RightPix, 0, sizeof(unsigned char) * 3);
-            }
-            else{
-               /*if (nChannel_R == 24) {
-                    memcpy(RightPix, pImgR + nIndex_R * 3, sizeof(unsigned char) * 3);
+        }
+        else if (nChannel_L == 8){
+            unsigned char * pImgL = m_ImageLeft.scanLine(i);
+            unsigned char * pImgR = m_ImageRight.scanLine(i);
+            for (int j = minCols_L; j < maxCols_L; ++j){
+                // left Image
+                if (j < 0 || j >= nCols_L){
+                   memset(LeftPix, 0, sizeof(unsigned char) * 3);
+                }
+                else{
+                   LeftPix[0] = pImgL[j];
+                   LeftPix[1] = pImgL[j];
+                   LeftPix[2] = pImgL[j];
+                }
+                // right image
+                int nIndex_R = j - nDisparity;
+                if (nIndex_R < 0 || nIndex_R >= nCols_R){
+                    memset(RightPix, 0, sizeof(unsigned char) * 3);
                 }
                 else{
                     RightPix[0] = pImgR[nIndex_R];
                     RightPix[1] = pImgR[nIndex_R];
                     RightPix[2] = pImgR[nIndex_R];
-                }*/
-                QColor pixel_color(pImgR[nIndex_R]);
-                RightPix[0] = pixel_color.red();
-                RightPix[1] = pixel_color.green();
-                RightPix[2] = pixel_color.blue();
+                }
+                // fusion
+                int nIndex = j - minCols_L;
+                pImage[(i * nCols_LR + nIndex) * 3] = RightPix[0];
+                pImage[(i * nCols_LR + nIndex) * 3 + 1] = RightPix[1];
+                pImage[(i * nCols_LR + nIndex) * 3 + 2] = LeftPix[2];
             }
-
-            // fusion
-            int nIndex = j - minCols_L;
-            pImage[(i * nCols_LR + nIndex) * 3] = RightPix[0];
-            pImage[(i * nCols_LR + nIndex) * 3 + 1] = RightPix[1];
-            pImage[(i * nCols_LR + nIndex) * 3 + 2] = LeftPix[2];
         }
     }
 
