@@ -14,6 +14,31 @@ cd build
 cmake ..
 make
 ```
+# GUI tools
+After you open the left and right image, the window only show the left image :
+|<img src="initial.png" width="250" alt="left image" />|
+|     :---:      |
+| *left image* |
+Only after you click the **stereo**, then the main window shows the anaglyph image :
+|<img src="red_cyan.png" width="250" alt="left image" />|
+|     :---:      |
+| *Red/Cyan mode* |
+
+There are some other control bars for the software:
+| Action | key | function |
+| :---         |     :---:      |          :---: |
+| Zoom in | -- | zoom in for the image | 
+| Zoom out | -- | zoom out for the image | 
+| Normal size | -- | normalize for the window to show the image | 
+| Fit to window | -- | fit to window to show the image | 
+| Left | -- | only show the left image | 
+| Right | -- | only show the right image | 
+| Red-Green | -- | shows the anaglyph image | 
+| -- | Scroll | scroll the bar to show the image | 
+| -- |ctrl + Scroll up | large the disparity | 
+| -- |ctrl + Scroll down | low the disparity | 
+| -- |shit + ctrl + Scroll up | large the disparity with 5x speed| 
+| -- |shit + ctrl + Scroll down | low the disparity with 5x speed| 
 
 ## FEATURE
 Can hand both gray and color image.
