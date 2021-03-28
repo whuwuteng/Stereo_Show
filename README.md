@@ -38,20 +38,22 @@ There are some other control bars for the software:
 | Right | -- | only show the right image | 
 | Red-Green | -- | shows the anaglyph image | 
 | -- | Scroll | scroll the bar to show the image | 
-| -- |ctrl + Scroll up | large the disparity | 
-| -- |ctrl + Scroll down | low the disparity | 
-| -- |shit + ctrl + Scroll up | large the disparity with 5x speed| 
-| -- |shit + ctrl + Scroll down | low the disparity with 5x speed| 
+| -- |ctrl + Scroll up | increase the disparity | 
+| -- |ctrl + Scroll down | decrease the disparity | 
+| -- |shit + ctrl + Scroll up | increase the disparity with 5x speed| 
+| -- |shit + ctrl + Scroll down | decrease the disparity with 5x speed| 
 
 ### Setting
-You can also set the intial disparity in the file "settings.ini", for example, if you want the inital disparity is 100, you can write the value in the file:
+You can also set the intial disparity in the file **settings.ini**, for example, if you want the inital disparity is 100, you can write the value in the file:
 
+```
 disp=100
+```
 
 ## FEATURE
 Can hand both gray and color image.
 
-## EXAMPLE
+### EXAMPLE
 The gray image from [ETH3D](https://www.eth3d.net/datasets) dataset:
 |<img src="im0.png" width="250" alt="left image" />|<img src="im1.png" width="250" alt="right image" />|<img src="eth3d.png" width="250" alt="Red/Cyan image" />|
 | :---:         |     :---:      |          :---: |
