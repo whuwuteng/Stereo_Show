@@ -7,14 +7,13 @@ The Red/Cyan mode is also called stereo anaglyph, a [python based implement](htt
 If you want to check parallax error in y(vertic), because this error is important for stereo Matching.
 
 ## USAGE
-You can use QtCreate to import the porject, also you can use CMake
-<center><h2>CMakeLists for Ubuntu 16.04</h2></center>
-<UL>
-<LI> mkdir build
-<LI> cd build
-<LI> cmake ..
-<LI> make
-</UL>
+You can use QtCreate to import the porject, also you can use CMake, CMakeLists for **Ubuntu 16.04** :
+```shell
+mkdir build
+cd build
+cmake ..
+make
+```
 
 ## FEATURE
 Can hand both gray and color image.
