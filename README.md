@@ -14,19 +14,19 @@ cd build
 cmake ..
 make
 ```
-# GUI
+### GUI
 After you open the left and right image, the window only show the left image :
-|<img src="initial.png" width="250" alt="left image" />|
+|<img src="initial.png" width="500" alt="left image" />|
 |     :---:      |
 | *left image* |
 
 Only after you click the **stereo**, then the main window shows the anaglyph image :
 
-|<img src="red_cyan.png" width="250" alt="left image" />|
+|<img src="red_cyan.png" width="500" alt="left image" />|
 |     :---:      |
 | *Red/Cyan mode* |
 
-# Control bar and hot key
+### Control bar and hot key
 There are some other control bars for the software:
 | Action | key | function |
 | :---         |     :---:      |          :---: |
@@ -43,8 +43,8 @@ There are some other control bars for the software:
 | -- |shit + ctrl + Scroll up | large the disparity with 5x speed| 
 | -- |shit + ctrl + Scroll down | low the disparity with 5x speed| 
 
-# Setting
-You can also set the intial disparity in the file "settings.ini", for example :
+### Setting
+You can also set the intial disparity in the file "settings.ini", for example, if you want the inital disparity is 100, you can write the value in the file:
 
 disp=100
 
