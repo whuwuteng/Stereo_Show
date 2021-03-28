@@ -53,7 +53,7 @@ disp=100
 ## FEATURE
 Can hand both gray and color image.
 
-### EXAMPLE
+### Example
 The gray image from [ETH3D](https://www.eth3d.net/datasets) dataset:
 |<img src="im0.png" width="250" alt="left image" />|<img src="im1.png" width="250" alt="right image" />|<img src="eth3d.png" width="250" alt="Red/Cyan image" />|
 | :---:         |     :---:      |          :---: |
@@ -65,4 +65,4 @@ The gray image from [Middlebury stereo](https://vision.middlebury.edu/stereo/) d
 | *left image* | *right image* | *Red/Cyan mode* | 
 
 ## MAINTENANCE
-If you think you have any problem, contact Teng Wu <teng.wu@ign.fr>
+If you think you have any problem, contact Teng Wu <whuwuteng@gmail.com>
