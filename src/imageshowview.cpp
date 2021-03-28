@@ -169,6 +169,8 @@ void ImageShowView::CreateRedGreenImage()
     unsigned char RightPix[3] = { 0 };
 
     // red-green
+    // refer http://www.3dtv.at/knowhow/anaglyphcomparison_en.aspx
+    // refer https://github.com/miguelgrinberg/anaglyph.py
     // scanLine(i) is different from the data block
     // should use other method to get color
     // refer https://stackoverflow.com/questions/12382301/qt-qimage-how-to-extract-rgb
@@ -202,9 +204,10 @@ void ImageShowView::CreateRedGreenImage()
                 }
                 // fusion
                 int nIndex = j - minCols_L;
-                pImage[(i * nCols_LR + nIndex) * 3] = RightPix[0];
+                //pImage[(i * nCols_LR + nIndex) * 3] = LeftPix[0];
+                pImage[(i * nCols_LR + nIndex) * 3] = (unsigned char)(0.7 * (double)(LeftPix[1]) + 0.3 * (double)(LeftPix[1]));
                 pImage[(i * nCols_LR + nIndex) * 3 + 1] = RightPix[1];
-                pImage[(i * nCols_LR + nIndex) * 3 + 2] = LeftPix[2];
+                pImage[(i * nCols_LR + nIndex) * 3 + 2] = RightPix[2];
             }
         }
         else if (nChannel_L == 8){
@@ -232,9 +235,10 @@ void ImageShowView::CreateRedGreenImage()
                 }
                 // fusion
                 int nIndex = j - minCols_L;
-                pImage[(i * nCols_LR + nIndex) * 3] = RightPix[0];
+                //pImage[(i * nCols_LR + nIndex) * 3] = LeftPix[0];
+                pImage[(i * nCols_LR + nIndex) * 3] = (unsigned char)(0.7 * (double)(LeftPix[1]) + 0.3 * (double)(LeftPix[1]));
                 pImage[(i * nCols_LR + nIndex) * 3 + 1] = RightPix[1];
-                pImage[(i * nCols_LR + nIndex) * 3 + 2] = LeftPix[2];
+                pImage[(i * nCols_LR + nIndex) * 3 + 2] = RightPix[2];
             }
         }
     }
